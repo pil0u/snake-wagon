@@ -1,5 +1,5 @@
 class Snake
-  TILE_SIZE = 20
+  TILE_SIZE = Config::TILE_SIZE
 
   def initialize
     @x = TILE_SIZE

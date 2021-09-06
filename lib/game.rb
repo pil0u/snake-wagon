@@ -1,9 +1,12 @@
 require 'gosu'
+require_relative '../config'
 require_relative 'snake'
 
 class Game < Gosu::Window
+  WINDOW_SIZE = Config::WINDOW_SIZE
+
   def initialize
-    super 640, 480
+    super WINDOW_SIZE, WINDOW_SIZE
     self.caption = "Le serpent @ Le Wagon"
 
     @snake = Snake.new
