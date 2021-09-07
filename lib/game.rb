@@ -9,15 +9,38 @@ class Game < Gosu::Window
     super WINDOW_SIZE, WINDOW_SIZE
     self.caption = "Le serpent @ Le Wagon"
 
+    # Force 1 mise à jour toutes les 0.1 secondes (au lieu de 0.016)
+    @refresh_rate = 0.1
+    @last_timestamp = Time.now
+
     @snake = Snake.new
   end
 
   def update
-    # ...
+    return if (Time.now - @last_timestamp) < @refresh_rate
+
+    update_snake_direction
+    @snake.move
+    @last_timestamp = Time.now
   end
 
   def draw
     @snake.draw
+  end
+
+  private
+
+  # D'abord juste les touches, ensuite la contrainte de direction
+  def update_snake_direction
+    if Gosu.button_down?(Gosu::KB_RIGHT) && @snake.direction != "left"
+      @snake.direction = "right"
+    elsif Gosu.button_down?(Gosu::KB_DOWN) && @snake.direction != "up"
+      @snake.direction = "down"
+    elsif Gosu.button_down?(Gosu::KB_LEFT) && @snake.direction != "right"
+      @snake.direction = "left"
+    elsif Gosu.button_down?(Gosu::KB_UP) && @snake.direction != "down"
+      @snake.direction = "up"
+    end
   end
 end
 
