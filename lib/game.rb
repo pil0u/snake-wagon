@@ -4,22 +4,13 @@ require_relative 'food'
 require_relative 'snake'
 
 class Game < Gosu::Window
-  WINDOW_SIZE = Config::WINDOW_SIZE
-  TILE_SIZE = Config::TILE_SIZE
-
   def initialize
-    super WINDOW_SIZE, WINDOW_SIZE
+    super Config::WINDOW_SIZE, Config::WINDOW_SIZE
     self.caption = "Le serpent @ Le Wagon"
     @background_image = Gosu::Image.new('./media/background.jpg', tileable: true)
     @font = Gosu::Font.new(24)
 
-    # Force 1 mise à jour toutes les 0.1 secondes (au lieu de 0.016)
-    @refresh_rate = 0.1
-    @last_timestamp = Time.now
-
-    @snake = Snake.new
-    @food = Food.popup
-    @score = 0
+    reset_game_states
   end
 
   def update
@@ -34,16 +25,17 @@ class Game < Gosu::Window
       sleep(3)
       sound.stop
 
-      reset_game
+      reset_game_states
     end
 
     if @food.eaten_by?(@snake)
       @snake.expand
-      accelerate
-      @score += 1
 
       @food.play_sound
       @food = Food.popup
+
+      accelerate
+      @score += 1
     end
   end
 
@@ -59,15 +51,17 @@ class Game < Gosu::Window
   private
 
   def accelerate
-    @refresh_rate = @refresh_rate * (1 - Config::ACCELERATION_RATE)
+    @refresh_rate *= (1 - Config::ACCELERATION_RATE)
   end
 
   def button_up(id)
     id == Gosu::KB_ESCAPE ? close : super
   end
 
-  def reset_game
-    @refresh_rate = 0.1
+  def reset_game_states
+    @game_speed = Config::INITIAL_GAME_SPEED
+    @refresh_rate = 1.0 / @game_speed
+    @last_timestamp = Time.now
 
     @snake = Snake.new
     @food = Food.popup
