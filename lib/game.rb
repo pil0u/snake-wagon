@@ -1,9 +1,11 @@
 require 'gosu'
 require_relative '../config'
+require_relative 'food'
 require_relative 'snake'
 
 class Game < Gosu::Window
   WINDOW_SIZE = Config::WINDOW_SIZE
+  TILE_SIZE = Config::TILE_SIZE
 
   def initialize
     super WINDOW_SIZE, WINDOW_SIZE
@@ -14,6 +16,7 @@ class Game < Gosu::Window
     @last_timestamp = Time.now
 
     @snake = Snake.new
+    @food = Food.new(4 * TILE_SIZE, 5 * TILE_SIZE)
   end
 
   def update
@@ -26,6 +29,7 @@ class Game < Gosu::Window
 
   def draw
     @snake.draw
+    @food.draw
   end
 
   private
