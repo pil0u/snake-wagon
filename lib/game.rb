@@ -10,6 +10,7 @@ class Game < Gosu::Window
   def initialize
     super WINDOW_SIZE, WINDOW_SIZE
     self.caption = "Le serpent @ Le Wagon"
+    @font = Gosu::Font.new(24)
 
     # Force 1 mise à jour toutes les 0.1 secondes (au lieu de 0.016)
     @refresh_rate = 0.1
@@ -17,6 +18,7 @@ class Game < Gosu::Window
 
     @snake = Snake.new
     @food = Food.popup
+    @score = 0
   end
 
   def update
@@ -35,8 +37,8 @@ class Game < Gosu::Window
     if @food.eaten_by?(@snake)
       @snake.expand
       accelerate
-      # Mon score augmente
-      # ...
+      @score += 1
+
       @food = Food.popup
     end
   end
@@ -44,6 +46,8 @@ class Game < Gosu::Window
   def draw
     @snake.draw
     @food.draw
+
+    @font.draw_text("Score: #{@score}", 10, 10, 0, 1, 1, color=Gosu::Color::YELLOW)
   end
 
   private
@@ -57,6 +61,7 @@ class Game < Gosu::Window
 
     @snake = Snake.new
     @food = Food.popup
+    @score = 0
   end
 
   # D'abord juste les touches, ensuite la contrainte de direction
