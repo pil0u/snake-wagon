@@ -1,5 +1,6 @@
 class Snake
   attr_accessor :direction
+  attr_reader :x, :y
 
   TILE_SIZE = Config::TILE_SIZE
 

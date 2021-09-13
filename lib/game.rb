@@ -16,7 +16,7 @@ class Game < Gosu::Window
     @last_timestamp = Time.now
 
     @snake = Snake.new
-    @food = Food.new(4 * TILE_SIZE, 5 * TILE_SIZE)
+    @food = Food.popup
   end
 
   def update
@@ -25,6 +25,14 @@ class Game < Gosu::Window
     update_snake_direction
     @snake.move
     @last_timestamp = Time.now
+
+    if @food.eaten_by?(@snake)
+      # Le serpent s'agrandit
+      # Le serpent accélère
+      # Mon score augmente
+      # ...
+      @food = Food.popup
+    end
   end
 
   def draw
