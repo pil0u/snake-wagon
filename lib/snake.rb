@@ -3,6 +3,7 @@ class Snake
   attr_reader :x, :y
 
   TILE_SIZE = Config::TILE_SIZE
+  WINDOW_SIZE = Config::WINDOW_SIZE
 
   def initialize
     @x = TILE_SIZE
@@ -27,6 +28,13 @@ class Snake
 
   def expand
     @tail_length += 1
+  end
+
+  def dead?
+    outside_window = (@x < 0 || @x >= WINDOW_SIZE || @y <0 || @y >= WINDOW_SIZE)
+    on_itself = @tail_tiles.include? [@x, @y]
+
+    return outside_window || on_itself
   end
 
   def draw

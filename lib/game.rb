@@ -26,6 +26,12 @@ class Game < Gosu::Window
     @snake.move
     @last_timestamp = Time.now
 
+    if @snake.dead?
+      sleep(3)
+
+      reset_game
+    end
+
     if @food.eaten_by?(@snake)
       @snake.expand
       accelerate
@@ -46,6 +52,13 @@ class Game < Gosu::Window
     @refresh_rate = @refresh_rate * (1 - Config::ACCELERATION_RATE)
   end
 
+  def reset_game
+    @refresh_rate = 0.1
+
+    @snake = Snake.new
+    @food = Food.popup
+  end
+
   # D'abord juste les touches, ensuite la contrainte de direction
   def update_snake_direction
     if Gosu.button_down?(Gosu::KB_RIGHT) && @snake.direction != "left"
@@ -59,5 +72,3 @@ class Game < Gosu::Window
     end
   end
 end
-
-Game.new.show
