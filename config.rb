@@ -1,5 +1,6 @@
 class Config
   ACCELERATION_RATE = 0.03
+  HIGH_SCORE_PATH = "highscores.txt"
   INITIAL_GAME_SPEED = 10
   TILE_SIZE = 20
   WINDOW_SIZE = TILE_SIZE ** 2

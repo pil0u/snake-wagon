@@ -10,6 +10,7 @@ class Game < Gosu::Window
     @background_image = Gosu::Image.new('./media/background.jpg', tileable: true)
     @font = Gosu::Font.new(24)
 
+    initialize_highscore
     reset_game_states
   end
 
@@ -24,6 +25,11 @@ class Game < Gosu::Window
       sound = @snake.play_dead_sound
       sleep(3)
       sound.stop
+
+      if @score > @highscore
+        @highscore = @score
+        update_highscore(@highscore)
+      end
 
       reset_game_states
     end
@@ -45,7 +51,7 @@ class Game < Gosu::Window
     @snake.draw
     @food.draw
 
-    @font.draw_text("Score: #{@score}", 10, 10, 0, 1, 1, color=Gosu::Color::YELLOW)
+    @font.draw_text("Score: #{@score} / High score: #{@highscore}", 10, 10, 0, 1, 1, color=Gosu::Color::YELLOW)
   end
 
   private
@@ -56,6 +62,23 @@ class Game < Gosu::Window
 
   def button_up(id)
     id == Gosu::KB_ESCAPE ? close : super
+  end
+
+  def initialize_highscore
+    if File.exist? Config::HIGH_SCORE_PATH
+      file = File.open(Config::HIGH_SCORE_PATH)
+      @highscore = file.readlines.last.split(' --- ').last.to_i
+      file.close
+    else
+      @highscore = 0
+      update_highscore(@highscore)
+    end
+  end
+
+  def update_highscore(score)
+    file = File.new(Config::HIGH_SCORE_PATH, "a")
+    file.puts("#{Time.now.strftime("%Y-%m-%d %H:%M:%S")} --- #{score}")
+    file.close
   end
 
   def reset_game_states
