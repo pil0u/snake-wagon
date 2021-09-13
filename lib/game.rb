@@ -30,7 +30,9 @@ class Game < Gosu::Window
     @last_timestamp = Time.now
 
     if @snake.dead?
+      sound = @snake.play_dead_sound
       sleep(3)
+      sound.stop
 
       reset_game
     end
@@ -40,6 +42,7 @@ class Game < Gosu::Window
       accelerate
       @score += 1
 
+      @food.play_sound
       @food = Food.popup
     end
   end

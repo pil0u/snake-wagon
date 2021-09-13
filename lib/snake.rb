@@ -6,6 +6,8 @@ class Snake
   WINDOW_SIZE = Config::WINDOW_SIZE
 
   def initialize
+    @dead_sound = Gosu::Sample.new("./media/death.wav")
+
     @x = TILE_SIZE
     @y = TILE_SIZE
     @tail_tiles = []
@@ -35,6 +37,10 @@ class Snake
     on_itself = @tail_tiles.include? [@x, @y]
 
     return outside_window || on_itself
+  end
+
+  def play_dead_sound
+    @dead_sound.play
   end
 
   def draw
