@@ -10,6 +10,7 @@ class Game < Gosu::Window
   def initialize
     super WINDOW_SIZE, WINDOW_SIZE
     self.caption = "Le serpent @ Le Wagon"
+    @background_image = Gosu::Image.new('./media/background.jpg', tileable: true)
     @font = Gosu::Font.new(24)
 
     # Force 1 mise à jour toutes les 0.1 secondes (au lieu de 0.016)
@@ -44,6 +45,8 @@ class Game < Gosu::Window
   end
 
   def draw
+    @background_image.draw(0, 0, 0)
+
     @snake.draw
     @food.draw
 
@@ -54,6 +57,10 @@ class Game < Gosu::Window
 
   def accelerate
     @refresh_rate = @refresh_rate * (1 - Config::ACCELERATION_RATE)
+  end
+
+  def button_up(id)
+    id == Gosu::KB_ESCAPE ? close : super
   end
 
   def reset_game
