@@ -27,8 +27,8 @@ class Game < Gosu::Window
     @last_timestamp = Time.now
 
     if @food.eaten_by?(@snake)
-      # Le serpent s'agrandit
-      # Le serpent accélère
+      @snake.expand
+      accelerate
       # Mon score augmente
       # ...
       @food = Food.popup
@@ -41,6 +41,10 @@ class Game < Gosu::Window
   end
 
   private
+
+  def accelerate
+    @refresh_rate = @refresh_rate * (1 - Config::ACCELERATION_RATE)
+  end
 
   # D'abord juste les touches, ensuite la contrainte de direction
   def update_snake_direction

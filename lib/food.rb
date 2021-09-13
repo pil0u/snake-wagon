@@ -17,7 +17,7 @@ class Food
     @x == snake.x && @y == snake.y
   end
 
-	def draw
+  def draw
     Gosu.draw_rect(@x, @y, TILE_SIZE, TILE_SIZE, Gosu::Color::RED)
-	end
+  end
 end
